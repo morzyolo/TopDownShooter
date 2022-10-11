@@ -6,7 +6,7 @@ public class PlayerTargeting : MonoBehaviour
     [SerializeField] private float _smoothTime = 0.1f;
 
     private Vector3 _velocity;
-    private float _distance = 5f;
+    private float _distance = -5f;
 
     private void Update()
     {
