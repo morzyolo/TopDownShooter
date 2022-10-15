@@ -3,9 +3,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerEquipment : MonoBehaviour
 {
-    private IWeapon _weapon;
-
     private PlayerInputActions _inputActions;
+
+    private Weapon _weapon;
 
     private void Awake()
     {
