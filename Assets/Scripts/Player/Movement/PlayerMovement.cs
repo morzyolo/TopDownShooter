@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Rigidbody2D), typeof(Animator))]
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float _currentSpeed = 2.5f;
@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _increasedSpeed = 4f;
 
     private PlayerInputActions _inputActions;
+    private Animator _moveAnimator;
 
     private Vector2 _direction;
     private Rigidbody2D _rigidbody;
@@ -16,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+        _moveAnimator = GetComponent<Animator>();
         _inputActions = GetComponent<PlayerInputSystem>().InputActions;
     }
 
@@ -26,7 +28,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Move();
+        if (_direction.sqrMagnitude > 0.9f)
+        {
+            _moveAnimator.SetBool("IsMove", true);
+            Move();
+        }
+        else
+            _moveAnimator.SetBool("IsMove", false);
     }
 
     private void Move()
