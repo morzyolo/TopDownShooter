@@ -8,11 +8,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _normalSpeed = 2.5f;
     [SerializeField] private float _increasedSpeed = 4f;
 
+    [SerializeField] private Transform _legsTransform;
+    [SerializeField] private float _legsRotationSpeed;
+
     private PlayerInputActions _inputActions;
+    private Rigidbody2D _rigidbody;
     private Animator _moveAnimator;
 
     private Vector2 _direction;
-    private Rigidbody2D _rigidbody;
 
     private void Awake()
     {
@@ -31,6 +34,10 @@ public class PlayerMovement : MonoBehaviour
         if (_direction.sqrMagnitude > 0.9f)
         {
             _moveAnimator.SetBool("IsMove", true);
+            _legsTransform.rotation = Quaternion.Lerp(
+                _legsTransform.rotation,
+                Quaternion.Euler(0f, 0f, Mathf.Atan2(_direction.x, -_direction.y) * Mathf.Rad2Deg - 180f), 
+                _legsRotationSpeed * Time.deltaTime);
             Move();
         }
         else
