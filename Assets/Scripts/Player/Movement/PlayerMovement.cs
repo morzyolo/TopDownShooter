@@ -36,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
             _moveAnimator.SetBool("IsMove", true);
             _legsTransform.rotation = Quaternion.Lerp(
                 _legsTransform.rotation,
-                Quaternion.Euler(0f, 0f, Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg - 90f), 
+                Quaternion.Euler(0f, 0f, Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg), 
                 _legsRotationSpeed * Time.deltaTime);
             Move();
         }
