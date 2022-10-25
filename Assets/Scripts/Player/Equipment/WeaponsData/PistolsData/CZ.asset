@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: CZ
   _damage: 5
+  _weaponSprite: {fileID: 0}
+  _bulletSprite: {fileID: 1789631813, guid: 258d3a93f42da9a4e8734f5eafdc775a, type: 3}
