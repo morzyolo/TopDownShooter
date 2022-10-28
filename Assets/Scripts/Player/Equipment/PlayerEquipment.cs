@@ -3,6 +3,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerEquipment : MonoBehaviour
 {
+    [SerializeField] private Transform _shootingPoint;
+
     private PlayerInputActions _inputActions;
 
     private Weapon _weapon;
