@@ -2,9 +2,8 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
-    protected WeaponBase WeaponBase;
+    [SerializeField] protected WeaponBase WeaponBaseData;
+    public WeaponBase WeaponData => this.WeaponBaseData;
 
-    public abstract void Shoot();
-
-    public void SetWeaponBase(WeaponBase weaponBase) => this.WeaponBase = weaponBase;
+    public abstract void Shoot(Animator animator);
 }

@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,34 +9,37 @@ public class PlayerEquipment : MonoBehaviour
     [SerializeField] private SpriteRenderer _body;
     [SerializeField] private Transform _shootingPoint;
 
-    [SerializeField] private WeaponBase[] _weapons;
-
+    [SerializeField] private List<Weapon> _weapons;
     private int _currentWeaponId;
     private int _weaponCount;
-    private Weapon _weapon;
 
+    private Animator _animator;
     private PlayerInputActions _inputActions;
 
     private void Awake()
     {
+        _animator = GetComponentInParent<Animator>();
+        _inputActions = GetComponentInParent<PlayerInputSystem>().InputActions;
+
+        _weapons = GetComponentsInChildren<Weapon>().ToList();
         _currentWeaponId = 0;
-        _weaponCount = _weapons.Length;
-        _inputActions = GetComponent<PlayerInputSystem>().InputActions;
-        _weapon = new Pistol();
+        _weaponCount = _weapons.Count;
+    }
+    private void Start()
+    {
+        EquipWeapon();
     }
 
     private void EquipWeapon()
     {
-        _head.transform.localPosition = _weapons[_currentWeaponId].HeadPosition;
-        _body.transform.localPosition = _weapons[_currentWeaponId].BodyPosition;
-        _body.sprite = _weapons[_currentWeaponId].ArmedSprite;
-        _shootingPoint.transform.localPosition = _weapons[_currentWeaponId].ShootingPoint;
+        WeaponBase data = _weapons[_currentWeaponId].WeaponData;
+        _head.transform.localPosition = data.HeadPosition;
+        _body.sprite = data.ArmedSprite;
+        _body.transform.localPosition = data.BodyPosition;
+        _shootingPoint.transform.localPosition = data.ShootingPoint;
     }
 
-    private void Shoot(InputAction.CallbackContext context)
-    {
-        _weapon.Shoot();
-    }
+    private void Shoot(InputAction.CallbackContext context) => _weapons[_currentWeaponId].Shoot(_animator);
 
     private void ChangeWeapon(InputAction.CallbackContext context)
     {
