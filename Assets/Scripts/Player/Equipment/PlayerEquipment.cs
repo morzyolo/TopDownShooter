@@ -11,7 +11,6 @@ public class PlayerEquipment : MonoBehaviour
 
     [SerializeField] private List<Weapon> _weapons;
     private int _currentWeaponId;
-    private int _weaponCount;
 
     private Animator _animator;
     private PlayerInputActions _inputActions;
@@ -23,7 +22,9 @@ public class PlayerEquipment : MonoBehaviour
 
         _weapons = GetComponentsInChildren<Weapon>().ToList();
         _currentWeaponId = 0;
-        _weaponCount = _weapons.Count;
+
+        foreach (var weapon in _weapons)
+            weapon.Equip();
     }
     private void Start()
     {
@@ -39,11 +40,22 @@ public class PlayerEquipment : MonoBehaviour
         _shootingPoint.transform.localPosition = data.ShootingPoint;
     }
 
+    private void DropWeapon(InputAction.CallbackContext context)
+    {
+        if (_currentWeaponId == 0) return;
+
+        _weapons[_currentWeaponId].Drop();
+        _weapons[_currentWeaponId].transform.parent = null;
+        _weapons.RemoveAt(_currentWeaponId);
+        _currentWeaponId--;
+        EquipWeapon();
+    }
+
     private void Shoot(InputAction.CallbackContext context) => _weapons[_currentWeaponId].Shoot(_animator);
 
     private void ChangeWeapon(InputAction.CallbackContext context)
     {
-        _currentWeaponId = (_currentWeaponId + (context.ReadValue<float>() > 0 ? 1 : _weaponCount - 1)) % _weaponCount;
+        _currentWeaponId = (_currentWeaponId + (context.ReadValue<float>() > 0 ? 1 : _weapons.Count - 1)) % _weapons.Count;
         EquipWeapon();
     }
 
@@ -51,11 +63,13 @@ public class PlayerEquipment : MonoBehaviour
     {
         _inputActions.Player.Shoot.started += Shoot;
         _inputActions.Player.ScrollWeapon.started += ChangeWeapon;
+        _inputActions.Player.DropWeapon.started += DropWeapon;
     }
 
     private void OnDisable()
     {
         _inputActions.Player.Shoot.started -= Shoot;
         _inputActions.Player.ScrollWeapon.started -= ChangeWeapon;
+        _inputActions.Player.DropWeapon.started -= DropWeapon;
     }
 }
