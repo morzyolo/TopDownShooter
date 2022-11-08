@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class Glock26 : Weapon
+public class Glock26 : Weapon, IDroppable
 {
     private SpriteRenderer _sprite;
 
@@ -20,9 +20,10 @@ public class Glock26 : Weapon
         _sprite.color = _invisibleColor;
     }
 
-    public override void Drop()
+    public void Drop()
     {
         _sprite.color = _visibleColor;
+        transform.parent = null;
     }
 
     public override void Shoot(Animator animator)

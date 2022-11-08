@@ -42,10 +42,9 @@ public class PlayerEquipment : MonoBehaviour
 
     private void DropWeapon(InputAction.CallbackContext context)
     {
-        if (_currentWeaponId == 0) return;
+        if (_weapons[_currentWeaponId] is not IDroppable weapon) return;
 
-        _weapons[_currentWeaponId].Drop();
-        _weapons[_currentWeaponId].transform.parent = null;
+        weapon.Drop();
         _weapons.RemoveAt(_currentWeaponId);
         _currentWeaponId--;
         EquipWeapon();
