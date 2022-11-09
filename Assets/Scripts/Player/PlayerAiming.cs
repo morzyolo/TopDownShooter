@@ -3,10 +3,17 @@ using UnityEngine.InputSystem;
 
 public class PlayerAiming : MonoBehaviour
 {
+    private Camera _mainCamera;
+
+    private void Start()
+    {
+        _mainCamera = Camera.main;
+    }
+
     private void FixedUpdate()
     {
         #if PLATFORM_STANDALONE_WIN
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        Vector3 mousePosition = _mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         LookAt(mousePosition);
         #endif
     }
