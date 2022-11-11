@@ -18,4 +18,4 @@ MonoBehaviour:
   _bulletSprite: {fileID: 0}
   _headPosition: {x: 0.0275, y: 0, z: 0}
   _bodyPosition: {x: 0.09, y: 0, z: 0}
-  _shootingPoint: {x: 0.45, y: 0, z: 0}
+  _shootingPoint: {x: 0.7, y: 0, z: 0}

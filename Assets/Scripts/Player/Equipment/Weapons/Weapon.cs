@@ -6,5 +6,5 @@ public abstract class Weapon : MonoBehaviour
     public WeaponBase WeaponData => this.WeaponBaseData;
 
     public abstract void Equip();
-    public abstract void Shoot(Animator animator);
+    public abstract void Shoot(Transform shootingPoint);
 }

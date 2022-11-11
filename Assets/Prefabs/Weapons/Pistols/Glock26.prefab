@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3729513918736894776}
-  - component: {fileID: 3729513918736894777}
   - component: {fileID: 3729513918736894782}
   - component: {fileID: 5889305679132624272}
+  - component: {fileID: 3729513918736894777}
   m_Layer: 0
   m_Name: Glock26
   m_TagString: Untagged
@@ -34,19 +34,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3729513918736894777
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3729513918736894779}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cf52d92518b7814ab631d9c4079c6a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WeaponBaseData: {fileID: 11400000, guid: 0d93006fa129bb4498f784cd63c47db4, type: 2}
 --- !u!212 &3729513918736894782
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -125,3 +112,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.38}
   m_EdgeRadius: 0
+--- !u!114 &3729513918736894777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3729513918736894779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cf52d92518b7814ab631d9c4079c6a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WeaponBaseData: {fileID: 11400000, guid: 0d93006fa129bb4498f784cd63c47db4, type: 2}

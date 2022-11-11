@@ -46,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        _rigidbody.MovePosition(_rigidbody.position + _direction * _currentSpeed * Time.fixedDeltaTime);
+        _rigidbody.MovePosition(_rigidbody.position + _currentSpeed * Time.fixedDeltaTime * _direction);
     }
 
     private void SetIncreasedSpeed(InputAction.CallbackContext context) => _currentSpeed = _increasedSpeed;

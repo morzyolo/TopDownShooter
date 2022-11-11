@@ -12,12 +12,10 @@ public class PlayerEquipment : MonoBehaviour
     [SerializeField] private List<Weapon> _weapons;
     private int _currentWeaponId;
 
-    private Animator _animator;
     private PlayerInputActions _inputActions;
 
     private void Awake()
     {
-        _animator = GetComponentInParent<Animator>();
         _inputActions = GetComponentInParent<PlayerInputSystem>().InputActions;
 
         _weapons = GetComponentsInChildren<Weapon>().ToList();
@@ -50,7 +48,7 @@ public class PlayerEquipment : MonoBehaviour
         EquipWeapon();
     }
 
-    private void Shoot(InputAction.CallbackContext context) => _weapons[_currentWeaponId].Shoot(_animator);
+    private void Shoot(InputAction.CallbackContext context) => _weapons[_currentWeaponId].Shoot(_shootingPoint);
 
     private void ChangeWeapon(InputAction.CallbackContext context)
     {

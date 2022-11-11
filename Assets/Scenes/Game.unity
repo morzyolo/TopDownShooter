@@ -135,7 +135,7 @@ GameObject:
   m_Layer: 0
   m_Name: ShootingPoint
   m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -147,7 +147,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100810516}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.45, y: 0, z: 0}
+  m_LocalPosition: {x: 0.7, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -372,8 +372,8 @@ MonoBehaviour:
   _body: {fileID: 1393480939}
   _shootingPoint: {fileID: 100810517}
   _weapons:
-  - {fileID: 1816321923}
   - {fileID: 1539035118}
+  - {fileID: 1816321923}
 --- !u!1 &251677448
 GameObject:
   m_ObjectHideFlags: 0
@@ -998,6 +998,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WeaponBaseData: {fileID: 11400000, guid: d7d3dc050be0ae0419b3e0cf76fbe00b, type: 2}
+  _body: {fileID: 1393480939}
+  _millisecondsPerFrame: 75
+  _punchFrames:
+  - {fileID: 21300000, guid: c152772f76b0e6b44bc4524cc2b299bf, type: 3}
+  - {fileID: 21300000, guid: 789b2ec8dd2a05d46803b63b65a01612, type: 3}
+  - {fileID: 21300000, guid: efcf71a9f781b6d4a813ae7e4b4f6335, type: 3}
+  - {fileID: 21300000, guid: c152772f76b0e6b44bc4524cc2b299bf, type: 3}
+  _punchBoxSize: {x: 0.5, y: 1}
 --- !u!1 &1725134016
 GameObject:
   m_ObjectHideFlags: 0

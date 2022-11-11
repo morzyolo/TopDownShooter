@@ -26,7 +26,7 @@ public class Glock26 : Weapon, IDroppable
         transform.parent = null;
     }
 
-    public override void Shoot(Animator animator)
+    public override void Shoot(Transform shootingPoint)
     {
         Debug.Log("Pistol shoot");
     }
