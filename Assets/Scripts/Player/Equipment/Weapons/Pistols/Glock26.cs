@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class Glock26 : Weapon, IDroppable
@@ -8,11 +9,14 @@ public class Glock26 : Weapon, IDroppable
     private Color _invisibleColor;
     private Color _visibleColor;
 
+    private Camera _mainCamera;
+
     private void Awake()
     {
+        _sprite = GetComponent<SpriteRenderer>();
         _invisibleColor = new Color(1f, 1f, 1f, 0f);
         _visibleColor = new Color(1f, 1f, 1f, 1f);
-        _sprite = GetComponent<SpriteRenderer>();
+        _mainCamera = Camera.main;
     }
 
     public override void Equip()
@@ -28,6 +32,13 @@ public class Glock26 : Weapon, IDroppable
 
     public override void Shoot(Transform shootingPoint)
     {
-        Debug.Log("Pistol shoot");
+        Vector3 direction = _mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue()) - transform.position;
+
+        RaycastHit2D hit = Physics2D.Raycast(shootingPoint.position, direction);
+
+        if (hit.transform.TryGetComponent<IDamageable>(out var enemy))
+        {
+            enemy.TakeDamage(WeaponBaseData.Damage);
+        }
     }
 }
