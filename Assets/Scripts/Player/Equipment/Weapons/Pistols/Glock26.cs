@@ -34,11 +34,11 @@ public class Glock26 : Weapon, IDroppable
     {
         Vector3 direction = _mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue()) - transform.position;
 
-        RaycastHit2D hit = Physics2D.Raycast(shootingPoint.position, direction);
-
+        RaycastHit2D hit = Physics2D.Raycast(shootingPoint.position, direction, 10f);
         if (hit.transform.TryGetComponent<IDamageable>(out var enemy))
         {
             enemy.TakeDamage(WeaponBaseData.Damage);
+            Debug.Log(hit.transform.name);
         }
     }
 }

@@ -73,9 +73,18 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""DropWeapon"",
+                    ""name"": ""Drop"",
                     ""type"": ""Button"",
                     ""id"": ""a27de883-ba1c-47ee-b29c-956ee1b94316"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PickUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""5486cde1-03f4-4d21-93ec-9bd700defe29"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -173,23 +182,23 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""97ee9c64-d184-4847-92b2-6980128ed83f"",
-                    ""path"": """",
+                    ""id"": ""75eeb7bd-147a-4309-a5fd-fe96b6f20390"",
+                    ""path"": ""<Keyboard>/g"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Joystick"",
-                    ""action"": ""ScrollWeapon"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Drop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""75eeb7bd-147a-4309-a5fd-fe96b6f20390"",
-                    ""path"": ""<Keyboard>/t"",
+                    ""id"": ""be1ed169-57db-41ee-8552-86e298203737"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""DropWeapon"",
+                    ""action"": ""PickUp"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -266,7 +275,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_ScrollWeapon = m_Player.FindAction("ScrollWeapon", throwIfNotFound: true);
-        m_Player_DropWeapon = m_Player.FindAction("DropWeapon", throwIfNotFound: true);
+        m_Player_Drop = m_Player.FindAction("Drop", throwIfNotFound: true);
+        m_Player_PickUp = m_Player.FindAction("PickUp", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -331,7 +341,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Shoot;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_ScrollWeapon;
-    private readonly InputAction m_Player_DropWeapon;
+    private readonly InputAction m_Player_Drop;
+    private readonly InputAction m_Player_PickUp;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -341,7 +352,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @ScrollWeapon => m_Wrapper.m_Player_ScrollWeapon;
-        public InputAction @DropWeapon => m_Wrapper.m_Player_DropWeapon;
+        public InputAction @Drop => m_Wrapper.m_Player_Drop;
+        public InputAction @PickUp => m_Wrapper.m_Player_PickUp;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -366,9 +378,12 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @ScrollWeapon.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnScrollWeapon;
                 @ScrollWeapon.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnScrollWeapon;
                 @ScrollWeapon.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnScrollWeapon;
-                @DropWeapon.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDropWeapon;
-                @DropWeapon.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDropWeapon;
-                @DropWeapon.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDropWeapon;
+                @Drop.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDrop;
+                @Drop.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDrop;
+                @Drop.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDrop;
+                @PickUp.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickUp;
+                @PickUp.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickUp;
+                @PickUp.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickUp;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -388,9 +403,12 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @ScrollWeapon.started += instance.OnScrollWeapon;
                 @ScrollWeapon.performed += instance.OnScrollWeapon;
                 @ScrollWeapon.canceled += instance.OnScrollWeapon;
-                @DropWeapon.started += instance.OnDropWeapon;
-                @DropWeapon.performed += instance.OnDropWeapon;
-                @DropWeapon.canceled += instance.OnDropWeapon;
+                @Drop.started += instance.OnDrop;
+                @Drop.performed += instance.OnDrop;
+                @Drop.canceled += instance.OnDrop;
+                @PickUp.started += instance.OnPickUp;
+                @PickUp.performed += instance.OnPickUp;
+                @PickUp.canceled += instance.OnPickUp;
             }
         }
     }
@@ -447,6 +465,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnShoot(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnScrollWeapon(InputAction.CallbackContext context);
-        void OnDropWeapon(InputAction.CallbackContext context);
+        void OnDrop(InputAction.CallbackContext context);
+        void OnPickUp(InputAction.CallbackContext context);
     }
 }

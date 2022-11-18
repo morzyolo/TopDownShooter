@@ -21,10 +21,14 @@ public class Unarmed : Weapon
     public override void Shoot(Transform shootingPoint)
     {
         Punch();
-        RaycastHit2D hit = Physics2D.BoxCast(shootingPoint.position, _punchBoxSize, shootingPoint.transform.rotation.z, Vector2.zero);
-        if (hit.transform.TryGetComponent<IDamageable>(out var enemy))
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(shootingPoint.position, _punchBoxSize, shootingPoint.transform.rotation.z, Vector2.zero);
+
+        foreach (var hit in hits)
         {
-            enemy.TakeDamage(WeaponBaseData.Damage);
+            if (hit.transform.TryGetComponent<IDamageable>(out var enemy))
+            {
+                enemy.TakeDamage(WeaponBaseData.Damage);
+            }
         }
     }
 

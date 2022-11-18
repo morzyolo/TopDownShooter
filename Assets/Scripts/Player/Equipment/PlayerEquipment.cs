@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerEquipment : MonoBehaviour
 {
+    [SerializeField] private float _pickUpRadius;
+
     [SerializeField] private SpriteRenderer _head;
     [SerializeField] private SpriteRenderer _body;
     [SerializeField] private Transform _shootingPoint;
@@ -13,6 +15,8 @@ public class PlayerEquipment : MonoBehaviour
     private int _currentWeaponId;
 
     private PlayerInputActions _inputActions;
+
+    private int _itemMaskId;
 
     private void Awake()
     {
@@ -23,6 +27,8 @@ public class PlayerEquipment : MonoBehaviour
 
         foreach (var weapon in _weapons)
             weapon.Equip();
+
+        _itemMaskId = LayerMask.GetMask("Item");
     }
     private void Start()
     {
@@ -38,6 +44,19 @@ public class PlayerEquipment : MonoBehaviour
         _shootingPoint.transform.localPosition = data.ShootingPoint;
     }
 
+    private void PickUp(InputAction.CallbackContext context)
+    {
+        RaycastHit2D hit = Physics2D.CircleCast(transform.position, _pickUpRadius, Vector2.zero, 0f, _itemMaskId);
+
+        if (hit.transform.TryGetComponent<Weapon>(out Weapon weapon))
+        {
+            weapon.Equip();
+            weapon.transform.parent = this.transform;
+            weapon.transform.localPosition = Vector3.zero;
+            _weapons.Add(weapon);
+        }
+    }
+
     private void DropWeapon(InputAction.CallbackContext context)
     {
         if (_weapons[_currentWeaponId] is not IDroppable weapon) return;
@@ -48,7 +67,10 @@ public class PlayerEquipment : MonoBehaviour
         EquipWeapon();
     }
 
-    private void Shoot(InputAction.CallbackContext context) => _weapons[_currentWeaponId].Shoot(_shootingPoint);
+    private void Shoot(InputAction.CallbackContext context)
+    {
+        _weapons[_currentWeaponId].Shoot(_shootingPoint);
+    }
 
     private void ChangeWeapon(InputAction.CallbackContext context)
     {
@@ -60,13 +82,15 @@ public class PlayerEquipment : MonoBehaviour
     {
         _inputActions.Player.Shoot.started += Shoot;
         _inputActions.Player.ScrollWeapon.started += ChangeWeapon;
-        _inputActions.Player.DropWeapon.started += DropWeapon;
+        _inputActions.Player.PickUp.started += PickUp;
+        _inputActions.Player.Drop.started += DropWeapon;
     }
 
     private void OnDisable()
     {
         _inputActions.Player.Shoot.started -= Shoot;
         _inputActions.Player.ScrollWeapon.started -= ChangeWeapon;
-        _inputActions.Player.DropWeapon.started -= DropWeapon;
+        _inputActions.Player.PickUp.started -= PickUp;
+        _inputActions.Player.Drop.started -= DropWeapon;
     }
 }

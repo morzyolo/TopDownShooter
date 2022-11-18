@@ -51,9 +51,18 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "DropWeapon",
+                    "name": "Drop",
                     "type": "Button",
                     "id": "a27de883-ba1c-47ee-b29c-956ee1b94316",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PickUp",
+                    "type": "Button",
+                    "id": "5486cde1-03f4-4d21-93ec-9bd700defe29",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -151,23 +160,23 @@
                 },
                 {
                     "name": "",
-                    "id": "97ee9c64-d184-4847-92b2-6980128ed83f",
-                    "path": "",
+                    "id": "75eeb7bd-147a-4309-a5fd-fe96b6f20390",
+                    "path": "<Keyboard>/g",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Joystick",
-                    "action": "ScrollWeapon",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Drop",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "75eeb7bd-147a-4309-a5fd-fe96b6f20390",
-                    "path": "<Keyboard>/t",
+                    "id": "be1ed169-57db-41ee-8552-86e298203737",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "DropWeapon",
+                    "action": "PickUp",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

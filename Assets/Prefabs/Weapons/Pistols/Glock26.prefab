@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3729513918736894782}
   - component: {fileID: 5889305679132624272}
   - component: {fileID: 3729513918736894777}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Glock26
   m_TagString: Untagged
   m_Icon: {fileID: 0}

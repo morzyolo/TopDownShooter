@@ -368,6 +368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6be161cf8b20da43a4abc0936f95194, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _pickUpRadius: 1.2
   _head: {fileID: 1725134018}
   _body: {fileID: 1393480939}
   _shootingPoint: {fileID: 100810517}
@@ -648,7 +649,7 @@ GameObject:
   - component: {fileID: 712668427}
   - component: {fileID: 712668429}
   - component: {fileID: 712668428}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
