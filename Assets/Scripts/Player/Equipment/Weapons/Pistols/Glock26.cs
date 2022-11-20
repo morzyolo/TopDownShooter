@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(SpriteRenderer))]
 public class Glock26 : Weapon, IDroppable
 {
-    private SpriteRenderer _sprite;
+    private SpriteRenderer _spriteRenderer;
 
     private Color _invisibleColor;
     private Color _visibleColor;
@@ -13,7 +13,7 @@ public class Glock26 : Weapon, IDroppable
 
     private void Awake()
     {
-        _sprite = GetComponent<SpriteRenderer>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
         _invisibleColor = new Color(1f, 1f, 1f, 0f);
         _visibleColor = new Color(1f, 1f, 1f, 1f);
         _mainCamera = Camera.main;
@@ -21,12 +21,12 @@ public class Glock26 : Weapon, IDroppable
 
     public override void Equip()
     {
-        _sprite.color = _invisibleColor;
+        _spriteRenderer.color = _invisibleColor;
     }
 
     public void Drop()
     {
-        _sprite.color = _visibleColor;
+        _spriteRenderer.color = _visibleColor;
         transform.parent = null;
     }
 
@@ -34,11 +34,13 @@ public class Glock26 : Weapon, IDroppable
     {
         Vector3 direction = _mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue()) - transform.position;
 
-        RaycastHit2D hit = Physics2D.Raycast(shootingPoint.position, direction, 10f);
-        if (hit.transform.TryGetComponent<IDamageable>(out var enemy))
+        RaycastHit2D[] hits = Physics2D.RaycastAll(shootingPoint.position, direction, 10f);
+
+        if (hits.Length == 0) return;
+
+        if (hits[0].transform.TryGetComponent<IDamageable>(out var enemy))
         {
             enemy.TakeDamage(WeaponBaseData.Damage);
-            Debug.Log(hit.transform.name);
         }
     }
 }
