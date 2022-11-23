@@ -46,9 +46,11 @@ public class PlayerEquipment : MonoBehaviour
 
     private void PickUp(InputAction.CallbackContext context)
     {
-        RaycastHit2D hit = Physics2D.CircleCast(transform.position, _pickUpRadius, Vector2.zero, 0f, _itemMaskId);
+        RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, _pickUpRadius, Vector2.zero, 0f, _itemMaskId);
 
-        if (hit.transform.TryGetComponent<Weapon>(out Weapon weapon))
+        if (hits.Length == 0) return;
+
+        if (hits[0].transform.TryGetComponent<Weapon>(out Weapon weapon))
         {
             weapon.Equip();
             weapon.transform.parent = this.transform;
