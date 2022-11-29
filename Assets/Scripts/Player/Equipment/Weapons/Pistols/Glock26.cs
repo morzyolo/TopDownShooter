@@ -5,8 +5,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(SpriteRenderer), typeof(BoxCollider2D))]
 public class Glock26 : Weapon, IDroppable
 {
-    [SerializeField] private PistolBullet _bulletPrefab;
-    private List<PistolBullet> _bullets;
+    private List<Bullet> _bullets;
 
     private SpriteRenderer _spriteRenderer;
     private BoxCollider2D _collider;
@@ -16,7 +15,7 @@ public class Glock26 : Weapon, IDroppable
 
     private void Awake()
     {
-        _bullets = new List<PistolBullet>();
+        _bullets = new List<Bullet>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _collider = GetComponent<BoxCollider2D>();
         _invisibleColor = new Color(1f, 1f, 1f, 0f);
@@ -41,7 +40,7 @@ public class Glock26 : Weapon, IDroppable
         int bulletId = FindFreeBulletId();
         if (bulletId == -1)
         {
-            _bullets.Add(Instantiate(_bulletPrefab, shootingPoint.position, shootingPoint.rotation));
+            _bullets.Add(Instantiate(WeaponBaseData.BulletPrefab, shootingPoint.position, shootingPoint.rotation));
         }
         else
         {

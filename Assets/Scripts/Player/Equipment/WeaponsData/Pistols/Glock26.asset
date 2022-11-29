@@ -15,7 +15,7 @@ MonoBehaviour:
   _name: Glock26
   _damage: 5
   _armedSprite: {fileID: 21300000, guid: 1db7dff0fed9d334e971feb350329985, type: 3}
-  _bulletSprite: {fileID: 1789631813, guid: 258d3a93f42da9a4e8734f5eafdc775a, type: 3}
+  _bulletPrefab: {fileID: 1111181250436579756, guid: edb35f56e02c062489e0ba408c40a987, type: 3}
   _headPosition: {x: 0.0275, y: 0, z: 0}
   _bodyPosition: {x: 0.34, y: 0, z: 0}
   _shootingPoint: {x: 1.31, y: -0.21, z: 0}
