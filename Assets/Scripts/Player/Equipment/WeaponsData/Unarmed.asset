@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Unarmed
   _damage: 10
+  _magazineSize: -1
   _armedSprite: {fileID: 21300000, guid: d97b28c7904c208469267e21ff1f2da5, type: 3}
-  _bulletSprite: {fileID: 0}
+  _weaponSprite: {fileID: 21300000, guid: d97b28c7904c208469267e21ff1f2da5, type: 3}
+  _bulletPrefab: {fileID: 0}
   _headPosition: {x: 0.0275, y: 0, z: 0}
   _bodyPosition: {x: 0.09, y: 0, z: 0}
   _shootingPoint: {x: 0.7, y: 0, z: 0}

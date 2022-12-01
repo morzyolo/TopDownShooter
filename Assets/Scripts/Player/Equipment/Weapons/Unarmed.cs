@@ -7,16 +7,9 @@ public class Unarmed : Weapon
     [SerializeField] private int _millisecondsPerFrame;
     [SerializeField] private Sprite[] _punchFrames;
 
-    private Sprite _originalBodySprite;
-
     [SerializeField] private Vector2 _punchBoxSize;
 
-    private void Awake()
-    {
-        _originalBodySprite = _body.sprite;
-    }
-
-    public override void Equip() { }
+    public override void PickUp() { }
 
     public override void Shoot(Transform shootingPoint)
     {
@@ -32,6 +25,8 @@ public class Unarmed : Weapon
         }
     }
 
+    public override int GetRemainingBullets() => -1;
+
     private async void Punch()
     {
         foreach(var frame in _punchFrames)
@@ -39,6 +34,6 @@ public class Unarmed : Weapon
             _body.sprite = frame;
             await Task.Delay(_millisecondsPerFrame);
         }
-        _body.sprite = _originalBodySprite;
+        _body.sprite = WeaponBaseData.ArmedSprite;
     }
 }

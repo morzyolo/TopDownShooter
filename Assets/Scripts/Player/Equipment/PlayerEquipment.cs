@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerEquipment : MonoBehaviour
 {
+    [SerializeField] private WeaponObserver _weaponObserver;
+
     [SerializeField] private float _pickUpRadius;
 
     [SerializeField] private SpriteRenderer _head;
@@ -26,16 +28,24 @@ public class PlayerEquipment : MonoBehaviour
         _currentWeaponId = 0;
 
         foreach (var weapon in _weapons)
-            weapon.Equip();
+            weapon.PickUp();
 
         _itemMaskId = LayerMask.GetMask("Item");
     }
+
     private void Start()
     {
-        EquipWeapon();
+        SetData();
+        _weaponObserver.SetInitialWeapon(_weapons[_currentWeaponId]);
     }
 
     private void EquipWeapon()
+    {
+        SetData();
+        _weaponObserver.ChangeWeapon(_weapons[_currentWeaponId]);
+    }
+
+    private void SetData()
     {
         WeaponBase data = _weapons[_currentWeaponId].WeaponData;
         _head.transform.localPosition = data.HeadPosition;
@@ -52,7 +62,7 @@ public class PlayerEquipment : MonoBehaviour
 
         if (hits[0].transform.TryGetComponent<Weapon>(out Weapon weapon))
         {
-            weapon.Equip();
+            weapon.PickUp();
             weapon.transform.parent = this.transform;
             weapon.transform.localPosition = Vector3.zero;
             _weapons.Add(weapon);

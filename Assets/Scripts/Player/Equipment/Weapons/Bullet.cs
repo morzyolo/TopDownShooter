@@ -7,7 +7,6 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float _speed;
     [SerializeField] private float _flightTime;
 
-    private Task _waiting;
     private CancellationTokenSource _cancellationTokenSource;
 
     private void Update()
@@ -33,7 +32,7 @@ public class Bullet : MonoBehaviour
     private void OnEnable()
     {
         _cancellationTokenSource = new CancellationTokenSource();
-        _waiting = WaitFlightTime();
+        Task _waiting = WaitFlightTime();
     }
 
     private void OnDisable()

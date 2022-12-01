@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(BoxCollider2D))]
 public class Glock26 : Weapon, IDroppable
@@ -24,17 +23,10 @@ public class Glock26 : Weapon, IDroppable
         _visibleColor = new Color(1f, 1f, 1f, 1f);
     }
 
-    public override void Equip()
+    public override void PickUp()
     {
         _spriteRenderer.color = _invisibleColor;
         _collider.enabled = false;
-    }
-
-    public void Drop()
-    {
-        _spriteRenderer.color = _visibleColor;
-        _collider.enabled = true;
-        transform.parent = null;
     }
 
     public override void Shoot(Transform shootingPoint)
@@ -46,15 +38,23 @@ public class Glock26 : Weapon, IDroppable
 
         int bulletId = FindFreeBulletId();
         if (bulletId == -1)
-        {
             _bullets.Add(Instantiate(WeaponBaseData.BulletPrefab, shootingPoint.position, shootingPoint.rotation));
-        }
         else
         {
             _bullets[bulletId].transform.SetPositionAndRotation(shootingPoint.position, shootingPoint.rotation);
             _bullets[bulletId].gameObject.SetActive(true);
         }
         _remainingBullets--;
+        Shooted?.Invoke(_remainingBullets);
+    }
+
+    public override int GetRemainingBullets() => _remainingBullets;
+
+    public void Drop()
+    {
+        _spriteRenderer.color = _visibleColor;
+        _collider.enabled = true;
+        transform.parent = null;
     }
 
     private int FindFreeBulletId()
