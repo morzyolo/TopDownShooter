@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(SpriteRenderer), typeof(BoxCollider2D))]
 public class Glock26 : Weapon, IDroppable
 {
+    private int _remainingBullets;
     private List<Bullet> _bullets;
 
     private SpriteRenderer _spriteRenderer;
@@ -15,6 +16,7 @@ public class Glock26 : Weapon, IDroppable
 
     private void Awake()
     {
+        _remainingBullets = WeaponBaseData.MagazineSize;
         _bullets = new List<Bullet>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _collider = GetComponent<BoxCollider2D>();
@@ -37,6 +39,11 @@ public class Glock26 : Weapon, IDroppable
 
     public override void Shoot(Transform shootingPoint)
     {
+        if (_remainingBullets == 0)
+        {
+            return;
+        }
+
         int bulletId = FindFreeBulletId();
         if (bulletId == -1)
         {
@@ -47,6 +54,7 @@ public class Glock26 : Weapon, IDroppable
             _bullets[bulletId].transform.SetPositionAndRotation(shootingPoint.position, shootingPoint.rotation);
             _bullets[bulletId].gameObject.SetActive(true);
         }
+        _remainingBullets--;
     }
 
     private int FindFreeBulletId()
