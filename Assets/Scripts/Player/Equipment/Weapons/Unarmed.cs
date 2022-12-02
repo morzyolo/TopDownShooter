@@ -25,7 +25,7 @@ public class Unarmed : Weapon
         }
     }
 
-    public override int GetRemainingBullets() => -1;
+    public override int GetCurrentBulletsCount() => -1;
 
     private async void Punch()
     {

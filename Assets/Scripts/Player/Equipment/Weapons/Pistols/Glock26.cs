@@ -4,7 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer), typeof(BoxCollider2D))]
 public class Glock26 : Weapon, IDroppable
 {
-    private int _remainingBullets;
+    private int _currentBulletCount;
+    private int _magazineCapacity;
+    private int _spareBullets;
     private List<Bullet> _bullets;
 
     private SpriteRenderer _spriteRenderer;
@@ -15,7 +17,7 @@ public class Glock26 : Weapon, IDroppable
 
     private void Awake()
     {
-        _remainingBullets = WeaponBaseData.MagazineSize;
+        _magazineCapacity = _currentBulletCount = WeaponBaseData.MagazineCapacity;
         _bullets = new List<Bullet>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _collider = GetComponent<BoxCollider2D>();
@@ -31,7 +33,7 @@ public class Glock26 : Weapon, IDroppable
 
     public override void Shoot(Transform shootingPoint)
     {
-        if (_remainingBullets == 0)
+        if (_currentBulletCount == 0)
         {
             return;
         }
@@ -44,11 +46,11 @@ public class Glock26 : Weapon, IDroppable
             _bullets[bulletId].transform.SetPositionAndRotation(shootingPoint.position, shootingPoint.rotation);
             _bullets[bulletId].gameObject.SetActive(true);
         }
-        _remainingBullets--;
-        Shooted?.Invoke(_remainingBullets);
+        _currentBulletCount--;
+        Shooted?.Invoke(_currentBulletCount);
     }
 
-    public override int GetRemainingBullets() => _remainingBullets;
+    public override int GetCurrentBulletsCount() => _currentBulletCount;
 
     public void Drop()
     {

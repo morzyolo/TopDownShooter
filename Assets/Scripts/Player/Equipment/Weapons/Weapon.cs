@@ -10,5 +10,5 @@ public abstract class Weapon : MonoBehaviour
 
     public abstract void PickUp();
     public abstract void Shoot(Transform shootingPoint);
-    public abstract int GetRemainingBullets();
+    public abstract int GetCurrentBulletsCount();
 }

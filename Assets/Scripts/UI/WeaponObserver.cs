@@ -11,8 +11,8 @@ public class WeaponObserver : MonoBehaviour
 
     private Weapon _currentWeapon;
 
-    private int _magazineSize;
-    private int _remainingBullets;
+    private int _spareBullets;
+    private int _currentBulletsCount;
 
     public void SetInitialWeapon(Weapon weapon)
     {
@@ -33,23 +33,21 @@ public class WeaponObserver : MonoBehaviour
     {
         WeaponBase data = weapon.WeaponData;
         _weaponImage.sprite = data.WeaponSprite;
-        _magazineSize = data.MagazineSize;
-        _remainingBullets = weapon.GetRemainingBullets();
-        if (_magazineSize < 0)
-            _bulletsText.text = "";
-        else
-            ChangeBulletsText();
+        _spareBullets = data.SpareBullets;
+        _currentBulletsCount = weapon.GetCurrentBulletsCount();
+        if (_spareBullets < 0) _bulletsText.text = "";
+        else ChangeBulletsText();
     }
 
     private void UpdateRemainingBullets(int remainingBullets)
     {
-        _remainingBullets = remainingBullets;
+        _currentBulletsCount = remainingBullets;
         ChangeBulletsText();
     }
 
     private void ChangeBulletsText()
     {
-        _bulletsText.text = String.Format("{0:00}/{1:00}", _remainingBullets, _magazineSize);
+        _bulletsText.text = String.Format("{0:00}/{1:00}", _currentBulletsCount, _spareBullets);
     }
 
     private void OnDisable()

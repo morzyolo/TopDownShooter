@@ -5,7 +5,8 @@ public class WeaponBase : ScriptableObject
 {
     [SerializeField] private string _name;
     [SerializeField] private int _damage;
-    [SerializeField] private int _magazineSize;
+    [SerializeField] private int _magazineCapacity;
+    [SerializeField] private int _spareBullets;
 
     [SerializeField] private Sprite _armedSprite;
     [SerializeField] private Sprite _weaponSprite;
@@ -17,7 +18,8 @@ public class WeaponBase : ScriptableObject
 
     public string Name { get => _name; }
     public int Damage { get => _damage; }
-    public int MagazineSize { get => _magazineSize; }
+    public int MagazineCapacity { get => _magazineCapacity; }
+    public int SpareBullets { get => _spareBullets; }
     public Sprite ArmedSprite { get => _armedSprite; }
     public Sprite WeaponSprite { get => _weaponSprite; }
     public Bullet BulletPrefab { get => _bulletPrefab; }
