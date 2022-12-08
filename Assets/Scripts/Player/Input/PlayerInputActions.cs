@@ -89,6 +89,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reload"",
+                    ""type"": ""Button"",
+                    ""id"": ""deb1e6fc-3d80-440c-84e5-b0c279fb63f0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -201,6 +210,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""PickUp"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""54dd8bf6-f984-43ec-ad7e-322d7917bcbe"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -277,6 +297,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_ScrollWeapon = m_Player.FindAction("ScrollWeapon", throwIfNotFound: true);
         m_Player_Drop = m_Player.FindAction("Drop", throwIfNotFound: true);
         m_Player_PickUp = m_Player.FindAction("PickUp", throwIfNotFound: true);
+        m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -343,6 +364,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ScrollWeapon;
     private readonly InputAction m_Player_Drop;
     private readonly InputAction m_Player_PickUp;
+    private readonly InputAction m_Player_Reload;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -354,6 +376,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @ScrollWeapon => m_Wrapper.m_Player_ScrollWeapon;
         public InputAction @Drop => m_Wrapper.m_Player_Drop;
         public InputAction @PickUp => m_Wrapper.m_Player_PickUp;
+        public InputAction @Reload => m_Wrapper.m_Player_Reload;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -384,6 +407,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @PickUp.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickUp;
                 @PickUp.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickUp;
                 @PickUp.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickUp;
+                @Reload.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReload;
+                @Reload.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReload;
+                @Reload.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReload;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -409,6 +435,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @PickUp.started += instance.OnPickUp;
                 @PickUp.performed += instance.OnPickUp;
                 @PickUp.canceled += instance.OnPickUp;
+                @Reload.started += instance.OnReload;
+                @Reload.performed += instance.OnReload;
+                @Reload.canceled += instance.OnReload;
             }
         }
     }
@@ -467,5 +496,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnScrollWeapon(InputAction.CallbackContext context);
         void OnDrop(InputAction.CallbackContext context);
         void OnPickUp(InputAction.CallbackContext context);
+        void OnReload(InputAction.CallbackContext context);
     }
 }

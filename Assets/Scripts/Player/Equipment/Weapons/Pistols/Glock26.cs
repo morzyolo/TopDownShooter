@@ -17,12 +17,21 @@ public class Glock26 : Weapon, IDroppable
 
     private void Awake()
     {
-        _magazineCapacity = _currentBulletCount = WeaponBaseData.MagazineCapacity;
+        _spareBullets = WeaponBaseData.SpareBullets;
+        _magazineCapacity = WeaponBaseData.MagazineCapacity;
+        _currentBulletCount = WeaponBaseData.MagazineCapacity;
         _bullets = new List<Bullet>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _collider = GetComponent<BoxCollider2D>();
         _invisibleColor = new Color(1f, 1f, 1f, 0f);
         _visibleColor = new Color(1f, 1f, 1f, 1f);
+    }
+
+    public void Drop()
+    {
+        _spriteRenderer.color = _visibleColor;
+        _collider.enabled = true;
+        transform.parent = null;
     }
 
     public override void PickUp()
@@ -47,21 +56,37 @@ public class Glock26 : Weapon, IDroppable
             _bullets[bulletId].gameObject.SetActive(true);
         }
         _currentBulletCount--;
-        Shooted?.Invoke(_currentBulletCount);
+        Observer?.ChangeBulletsText(_currentBulletCount, _spareBullets);
     }
 
-    public override int GetCurrentBulletsCount() => _currentBulletCount;
-
-    public void Drop()
+    public override void Reload()
     {
-        _spriteRenderer.color = _visibleColor;
-        _collider.enabled = true;
-        transform.parent = null;
+        if (_currentBulletCount == _magazineCapacity && _spareBullets == 0) return;
+
+        int neededCount = _magazineCapacity - _currentBulletCount;
+        if (neededCount < _spareBullets)
+        {
+            _currentBulletCount = _magazineCapacity;
+            _spareBullets -= neededCount;
+        }
+        else
+        {
+            _currentBulletCount += _spareBullets;
+            _spareBullets = 0;
+        }
+        Observer?.ChangeBulletsText(_currentBulletCount, _spareBullets);
     }
+
+    public override void Attach(WeaponObserver observer)
+    {
+        Observer = observer;
+        Observer.SetData(this.WeaponData, _currentBulletCount, _spareBullets);
+    }
+    public override void Notify() => Observer?.ChangeBulletsText(_currentBulletCount, _spareBullets);
 
     private int FindFreeBulletId()
     {
-        for (int i =0; i < _bullets.Count; i++) 
+        for (int i = 0; i < _bullets.Count; i++)
             if (!_bullets[i].isActiveAndEnabled)
                 return i;
         return -1;

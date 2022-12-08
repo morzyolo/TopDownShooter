@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -25,7 +26,7 @@ public class Unarmed : Weapon
         }
     }
 
-    public override int GetCurrentBulletsCount() => -1;
+    public override void Reload() { }
 
     private async void Punch()
     {
@@ -36,4 +37,12 @@ public class Unarmed : Weapon
         }
         _body.sprite = WeaponBaseData.ArmedSprite;
     }
+
+    public override void Attach(WeaponObserver observer)
+    {
+        Observer = observer;
+        Observer.SetData(this.WeaponData, -1, -1);
+    }
+
+    public override void Notify() { }
 }
