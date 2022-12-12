@@ -42,7 +42,7 @@ public class PlayerEquipment : MonoBehaviour
     {
         WeaponBase data = _weapons[_currentWeaponId].WeaponData;
         _head.transform.localPosition = data.HeadPosition;
-        _body.sprite = data.ArmedSprite;
+        _body.sprite = data.BodySprite;
         _body.transform.localPosition = data.BodyPosition;
         _shootingPoint.transform.localPosition = data.ShootingPoint;
         _weapons[_currentWeaponId].Attach(_weaponObserver);

@@ -8,8 +8,8 @@ public class WeaponBase : ScriptableObject
     [SerializeField] private int _magazineCapacity;
     [SerializeField] private int _spareBullets;
 
-    [SerializeField] private Sprite _armedSprite;
-    [SerializeField] private Sprite _weaponSprite;
+    [SerializeField] private Sprite _bodySprite;
+    [SerializeField] private Sprite _uiSprite;
     [SerializeField] private Bullet _bulletPrefab;
 
     [SerializeField] private Vector3 _headPosition;
@@ -20,8 +20,8 @@ public class WeaponBase : ScriptableObject
     public int Damage { get => _damage; }
     public int MagazineCapacity { get => _magazineCapacity; }
     public int SpareBullets { get => _spareBullets; }
-    public Sprite ArmedSprite { get => _armedSprite; }
-    public Sprite WeaponSprite { get => _weaponSprite; }
+    public Sprite BodySprite { get => _bodySprite; }
+    public Sprite UISprite { get => _uiSprite; }
     public Bullet BulletPrefab { get => _bulletPrefab; }
     public Vector3 HeadPosition { get => _headPosition; }
     public Vector3 BodyPosition { get => _bodyPosition; }

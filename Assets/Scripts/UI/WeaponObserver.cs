@@ -11,7 +11,7 @@ public class WeaponObserver : MonoBehaviour
 
     public void SetData(WeaponBase data, int currentBullets, int spareBullets)
     {
-        _weaponImage.sprite = data.WeaponSprite;
+        _weaponImage.sprite = data.UISprite;
         if (currentBullets < 0) _bulletsText.text = "";
         else ChangeBulletsText(currentBullets, spareBullets);
     }

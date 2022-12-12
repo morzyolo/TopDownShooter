@@ -35,7 +35,7 @@ public class Unarmed : Weapon
             _body.sprite = frame;
             await Task.Delay(_millisecondsPerFrame);
         }
-        _body.sprite = WeaponBaseData.ArmedSprite;
+        _body.sprite = WeaponBaseData.BodySprite;
     }
 
     public override void Attach(WeaponObserver observer)
