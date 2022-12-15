@@ -1,5 +1,4 @@
 using System;
-using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,7 +10,7 @@ public class WeaponObserver : MonoBehaviour
 
     public void SetData(WeaponBase data, int currentBullets, int spareBullets)
     {
-        _weaponImage.sprite = data.UISprite;
+        _weaponImage.sprite = data.WeaponSprite;
         if (currentBullets < 0) _bulletsText.text = "";
         else ChangeBulletsText(currentBullets, spareBullets);
     }
