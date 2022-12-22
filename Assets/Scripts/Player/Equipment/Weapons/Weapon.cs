@@ -1,13 +1,12 @@
-using System;
 using UnityEngine;
+using System.Threading.Tasks;
 
 public abstract class Weapon : MonoBehaviour
 {
-    public Action<int> Shooted;
-
     [SerializeField] protected WeaponBase WeaponBaseData;
     public WeaponBase WeaponData => this.WeaponBaseData;
 
+    protected Task ShootingTask;
     protected WeaponObserver Observer;
 
     public abstract void PickUp();

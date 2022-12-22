@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,14 +18,18 @@ public class Glock26 : Weapon, IDroppable
 
     private void Awake()
     {
-        _spareBullets = WeaponBaseData.SpareBullets;
-        _magazineCapacity = WeaponBaseData.MagazineCapacity;
         _currentBulletCount = WeaponBaseData.MagazineCapacity;
+        _magazineCapacity = WeaponBaseData.MagazineCapacity;
+        _spareBullets = WeaponBaseData.SpareBullets;
         _bullets = new List<Bullet>();
+
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _collider = GetComponent<BoxCollider2D>();
+
         _invisibleColor = new Color(1f, 1f, 1f, 0f);
         _visibleColor = new Color(1f, 1f, 1f, 1f);
+
+        ShootingTask = Task.Delay(0);
     }
 
     public void Drop()
@@ -42,6 +47,10 @@ public class Glock26 : Weapon, IDroppable
 
     public override void Shoot(Transform shootingPoint)
     {
+        if (!ShootingTask.IsCompleted) return;
+
+        ShootingTask = Task.Delay(WeaponBaseData.ShootingDelay);
+
         if (_currentBulletCount == 0)
         {
             return;

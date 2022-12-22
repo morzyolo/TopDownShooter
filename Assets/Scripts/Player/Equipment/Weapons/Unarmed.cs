@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -10,10 +9,19 @@ public class Unarmed : Weapon
 
     [SerializeField] private Vector2 _punchBoxSize;
 
+    private void Awake()
+    {
+        ShootingTask = Task.Delay(0);
+    }
+
     public override void PickUp() { }
 
     public override void Shoot(Transform shootingPoint)
     {
+        if (!ShootingTask.IsCompleted) return;
+
+        ShootingTask = Task.Delay(WeaponBaseData.ShootingDelay);
+
         Punch();
         RaycastHit2D[] hits = Physics2D.BoxCastAll(shootingPoint.position, _punchBoxSize, shootingPoint.transform.rotation.z, Vector2.zero);
 
