@@ -9,6 +9,7 @@ public class WeaponBase : ScriptableObject
     [SerializeField] private int _spareBullets;
 
     [SerializeField] private int _shootingDelay;
+    [SerializeField] private int _reloadTime;
 
     [SerializeField] private Sprite _bodySprite;
     [SerializeField] private Sprite _weaponSprite;
@@ -23,6 +24,7 @@ public class WeaponBase : ScriptableObject
     public int MagazineCapacity { get => _magazineCapacity; }
     public int SpareBullets { get => _spareBullets; }
     public int ShootingDelay { get => _shootingDelay; }
+    public int ReloadTime { get => _reloadTime; }
     public Sprite BodySprite { get => _bodySprite; }
     public Sprite WeaponSprite { get => _weaponSprite; }
     public Bullet BulletPrefab { get => _bulletPrefab; }

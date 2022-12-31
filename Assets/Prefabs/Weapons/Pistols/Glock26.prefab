@@ -125,4 +125,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WeaponBaseData: {fileID: 11400000, guid: 0d93006fa129bb4498f784cd63c47db4, type: 2}
-  _bulletPrefab: {fileID: 9046299644314871282, guid: edb35f56e02c062489e0ba408c40a987, type: 3}

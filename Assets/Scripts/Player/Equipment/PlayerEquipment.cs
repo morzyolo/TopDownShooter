@@ -48,23 +48,18 @@ public class PlayerEquipment : MonoBehaviour
         _weapons[_currentWeaponId].Attach(_weaponObserver);
     }
 
-    private void Shoot(InputAction.CallbackContext context)
-    {
-        _weapons[_currentWeaponId].Shoot(_shootingPoint);
-    }
+    private void Shoot(InputAction.CallbackContext context) => _weapons[_currentWeaponId].Shoot(_shootingPoint);
 
-    private void Reload(InputAction.CallbackContext context)
-    {
-        _weapons[_currentWeaponId].Reload();
-    }
+    private void Reload(InputAction.CallbackContext context) => _weapons[_currentWeaponId].TryReload();
 
     private void ChangeWeapon(InputAction.CallbackContext context)
     {
+        _weapons[_currentWeaponId].TryCancelReloadTask();
         _weapons[_currentWeaponId].Detach();
         _currentWeaponId = (_currentWeaponId + (context.ReadValue<float>() > 0 ? 1 : _weapons.Count - 1)) % _weapons.Count;
         EquipWeapon();
     }
-    
+
     private void PickUp(InputAction.CallbackContext context)
     {
         RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, _pickUpRadius, Vector2.zero, 0f, _itemMaskId);

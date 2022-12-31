@@ -1,4 +1,5 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +17,12 @@ public class Glock26 : Weapon, IDroppable
     private Color _invisibleColor;
     private Color _visibleColor;
 
+    private UniTask _reloadTask;
+    private UniTask _shootingTask;
+
+    private CancellationTokenSource _reloadCancellation;
+    private CancellationTokenSource _shootingCancellation;
+
     private void Awake()
     {
         _currentBulletCount = WeaponBaseData.MagazineCapacity;
@@ -28,12 +35,11 @@ public class Glock26 : Weapon, IDroppable
 
         _invisibleColor = new Color(1f, 1f, 1f, 0f);
         _visibleColor = new Color(1f, 1f, 1f, 1f);
-
-        ShootingTask = Task.Delay(0);
     }
 
     public void Drop()
     {
+        TryCancelReloadTask();
         _spriteRenderer.color = _visibleColor;
         _collider.enabled = true;
         transform.parent = null;
@@ -47,14 +53,14 @@ public class Glock26 : Weapon, IDroppable
 
     public override void Shoot(Transform shootingPoint)
     {
-        if (!ShootingTask.IsCompleted) return;
-
-        ShootingTask = Task.Delay(WeaponBaseData.ShootingDelay);
+        if (!_shootingTask.Status.IsCompleted() || !_reloadTask.Status.IsCompleted()) return;
 
         if (_currentBulletCount == 0)
         {
             return;
         }
+
+        _shootingTask = UniTask.Delay(WeaponBaseData.ShootingDelay);
 
         int bulletId = FindFreeBulletId();
         if (bulletId == -1)
@@ -65,12 +71,20 @@ public class Glock26 : Weapon, IDroppable
             _bullets[bulletId].gameObject.SetActive(true);
         }
         _currentBulletCount--;
-        Observer?.ChangeBulletsText(_currentBulletCount, _spareBullets);
+        Notify();
     }
 
-    public override void Reload()
+    public override void TryReload()
     {
-        if (_currentBulletCount == _magazineCapacity && _spareBullets == 0) return;
+        if (_currentBulletCount == _magazineCapacity || _spareBullets == 0) return;
+
+        _reloadTask = Reload();
+    }
+
+    private async UniTask Reload()
+    {
+        _reloadTask = UniTask.Delay(WeaponBaseData.ReloadTime, cancellationToken: _reloadCancellation.Token);
+        await _reloadTask;
 
         int neededCount = _magazineCapacity - _currentBulletCount;
         if (neededCount < _spareBullets)
@@ -83,7 +97,16 @@ public class Glock26 : Weapon, IDroppable
             _currentBulletCount += _spareBullets;
             _spareBullets = 0;
         }
-        Observer?.ChangeBulletsText(_currentBulletCount, _spareBullets);
+        Notify();
+    }
+
+    public override void TryCancelReloadTask()
+    {
+        if (!_reloadTask.Status.IsCompleted())
+        {
+            _reloadCancellation.Cancel();
+            _reloadCancellation = new CancellationTokenSource();
+        } 
     }
 
     public override void Attach(WeaponObserver observer)
@@ -91,7 +114,7 @@ public class Glock26 : Weapon, IDroppable
         Observer = observer;
         Observer.SetData(this.WeaponData, _currentBulletCount, _spareBullets);
     }
-    public override void Notify() => Observer?.ChangeBulletsText(_currentBulletCount, _spareBullets);
+    public override void Notify() => Observer.ChangeBulletsText(_currentBulletCount, _spareBullets);
 
     private int FindFreeBulletId()
     {
@@ -99,5 +122,31 @@ public class Glock26 : Weapon, IDroppable
             if (!_bullets[i].isActiveAndEnabled)
                 return i;
         return -1;
+    }
+
+    private void OnEnable()
+    {
+        if (_shootingCancellation != null)
+            _reloadCancellation.Dispose();
+
+        if (_reloadCancellation != null)
+            _shootingCancellation.Dispose();
+
+        _reloadCancellation = new CancellationTokenSource();
+        _shootingCancellation = new CancellationTokenSource();
+    }
+
+    private void OnDisable()
+    {
+        _reloadCancellation.Cancel();
+        _shootingCancellation.Cancel();
+        _reloadCancellation.Dispose();
+        _shootingCancellation.Dispose();
+    }
+
+    private void OnDestroy()
+    {
+        _reloadCancellation.Dispose();
+        _shootingCancellation.Dispose();
     }
 }

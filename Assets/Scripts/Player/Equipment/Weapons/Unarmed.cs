@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -9,18 +10,15 @@ public class Unarmed : Weapon
 
     [SerializeField] private Vector2 _punchBoxSize;
 
-    private void Awake()
-    {
-        ShootingTask = Task.Delay(0);
-    }
+    private UniTask _punchTask;
 
     public override void PickUp() { }
 
     public override void Shoot(Transform shootingPoint)
     {
-        if (!ShootingTask.IsCompleted) return;
+        if (!_punchTask.Status.IsCompleted()) return;
 
-        ShootingTask = Task.Delay(WeaponBaseData.ShootingDelay);
+        _punchTask = UniTask.Delay(WeaponBaseData.ShootingDelay);
 
         Punch();
         RaycastHit2D[] hits = Physics2D.BoxCastAll(shootingPoint.position, _punchBoxSize, shootingPoint.transform.rotation.z, Vector2.zero);
@@ -34,7 +32,8 @@ public class Unarmed : Weapon
         }
     }
 
-    public override void Reload() { }
+    public override void TryReload() { }
+    public override void TryCancelReloadTask() { }
 
     private async void Punch()
     {
@@ -49,7 +48,7 @@ public class Unarmed : Weapon
     public override void Attach(WeaponObserver observer)
     {
         Observer = observer;
-        Observer.SetData(this.WeaponData, -1, -1);
+        Observer.SetData(this.WeaponData, WeaponBaseData.MagazineCapacity, WeaponBaseData.SpareBullets);
     }
 
     public override void Notify() { }
