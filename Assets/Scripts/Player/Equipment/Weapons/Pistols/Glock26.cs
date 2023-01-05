@@ -83,6 +83,7 @@ public class Glock26 : Weapon, IDroppable
 
     private async UniTask Reload()
     {
+        Observer.StartReload((float)WeaponBaseData.ReloadTime / 1000);
         _reloadTask = UniTask.Delay(WeaponBaseData.ReloadTime, cancellationToken: _reloadCancellation.Token);
         await _reloadTask;
 
@@ -104,9 +105,10 @@ public class Glock26 : Weapon, IDroppable
     {
         if (!_reloadTask.Status.IsCompleted())
         {
+            Observer.CancelReload();
             _reloadCancellation.Cancel();
             _reloadCancellation = new CancellationTokenSource();
-        } 
+        }
     }
 
     public override void Attach(WeaponObserver observer)

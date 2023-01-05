@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class WeaponObserver : MonoBehaviour
 {
+    public Action<float> ReloadStarted;
+    public Action ReloadCanceled;
+
     [SerializeField] private Image _weaponImage;
     [SerializeField] private TMP_Text _bulletsText;
 
@@ -19,4 +22,7 @@ public class WeaponObserver : MonoBehaviour
     {
         _bulletsText.text = String.Format("{0:00}/{1:00}", currentBullets, spareBullets);
     }
+
+    public void StartReload(float seconds) => ReloadStarted?.Invoke(seconds);
+    public void CancelReload() => ReloadCanceled?.Invoke();
 }
